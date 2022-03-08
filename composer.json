@@ -1,0 +1,39 @@
+{
+    "name": "asgedev/laravel-alphavantage",
+    "description": "This is a Laravel library for AlphaVantage APIs",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "André Gervásio",
+            "email": "andreger@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelAlphaVantage\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelAlphaVantage\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit tests"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelAlphaVantage\\LaravelAlphaVantageServiceProvider"
+            ]
+        }
+    }
+}
