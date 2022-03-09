@@ -10,7 +10,9 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0"
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^8.0",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
@@ -18,12 +20,12 @@
     },
     "autoload": {
         "psr-4": {
-            "LaravelAlphaVantage\\": "src"
+            "Asgedev\\AlphaVantage\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LaravelAlphaVantage\\Tests\\": "tests"
+            "Asgedev\\AlphaVantage\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -32,8 +34,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelAlphaVantage\\LaravelAlphaVantageServiceProvider"
-            ]
+                "Asgedev\\AlphaVantage\\AlphaVantageServiceProvider"
+            ],
+            "aliases": {
+                "AlphaVantage": "Asgedev\\AlphaVantage\\Facades\\AlphaVantageFacade"
+            }
         }
     }
 }
