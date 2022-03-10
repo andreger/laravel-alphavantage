@@ -3,7 +3,7 @@ namespace Asgedev\AlphaVantage\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class AlphaVantageFacade extends Facade
+class StockFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -12,6 +12,6 @@ class AlphaVantageFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'alpha-vantage';
+        return 'stock';
     }
 }

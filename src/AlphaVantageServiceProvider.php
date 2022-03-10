@@ -14,8 +14,8 @@ class AlphaVantageServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind('alpha-vantage', function() {
-           return new AlphaVantage();
+        $this->app->bind('stock', function() {
+            return new Stock();
         });
     }
 }

@@ -27,7 +27,7 @@ class AlphaVantage
         return $this;
     }
 
-    public function get()
+    protected function getResponse()
     {
         $qs = [];
         foreach ($this->params as $key => $value) {

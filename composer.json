@@ -37,7 +37,7 @@
                 "Asgedev\\AlphaVantage\\AlphaVantageServiceProvider"
             ],
             "aliases": {
-                "AlphaVantage": "Asgedev\\AlphaVantage\\Facades\\AlphaVantageFacade"
+                "Stock": "Asgedev\\AlphaVantage\\Facades\\StockFacade"
             }
         }
     }
