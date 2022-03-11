@@ -8,23 +8,75 @@ class Stock extends AlphaVantage
     {
         $response = $this->getResponse();
 
-        if ($response) {
-            $response = json_decode($response);
-            $vars = get_object_vars($response);
-            $property = null;
+        if ($property = $this->getTimeSerieProperty($response)) {
 
-            foreach ($vars as $key => $var) {
-                if (str_contains($key, 'Time Serie')) {
-                    $property = $key;
-                    break;
-                }
+            $result = [];
+            foreach ($response->$property as $index => $item) {
+                $result[$index] = $this->renameProperties($item);
             }
 
-            if ($property) {
-                return $this->getData($response->$property);
+            return $result;
+        }
+
+        return null;
+    }
+
+    public function quote()
+    {
+        $this->params['function'] = 'GLOBAL_QUOTE';
+
+        $response = $this->getResponse();
+
+        if ($response) {
+            return $this->renameProperties($response->{'Global Quote'});
+        }
+
+        return null;
+    }
+
+
+    public function search(string $keywords)
+    {
+        $this->params['function'] = 'SYMBOL_SEARCH';
+        $this->params['keywords'] = $keywords;
+
+        $response = $this->getResponse();
+
+        $result = [];
+        if ($response) {
+            foreach ($response->bestMatches as $item) {
+                $result[] = $this->renameProperties($item);
             }
         }
 
+        return $result;
+    }
+
+    private function getTimeSerieProperty(?object $object): ?string
+    {
+        $vars = get_object_vars($object);
+
+        foreach ($vars as $key => $var) {
+            if (str_contains($key, 'Time Serie')) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    private function renameProperties(?object $input): ?object
+    {
+        if ($input) {
+            $output = [];
+            $properties = get_object_vars($input);
+            foreach ($properties as $key => $value) {
+                $keyArray = explode(" ", $key);
+                $output[$keyArray[1]] = $value;
+            }
+
+            return (object)$output;
+        }
         return null;
     }
 

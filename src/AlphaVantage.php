@@ -8,7 +8,7 @@ class AlphaVantage
 {
     private const BASE_URL = 'https://www.alphavantage.co/query?';
 
-    private $params;
+    protected $params;
 
     /**
      * AlphaVantage constructor.
@@ -24,11 +24,11 @@ class AlphaVantage
      * @param int $minuteInterval Supported values: 1, 5, 15, 30 and 60
      * @return $this
      */
-    public function intraday(int $minuteInterval = 60)
+    public function intraday(int $minuteInterval = 60, bool $adjusted = false)
     {
         $this->params['function'] = 'TIME_SERIES_INTRADAY';
         $this->params['interval'] = $minuteInterval . 'min';
-        $this->params['adjusted'] = false;
+        $this->params['adjusted'] = $adjusted;
         return $this;
     }
 
@@ -40,10 +40,7 @@ class AlphaVantage
      */
     public function intradayAdjusted(int $minuteInterval = 60)
     {
-        $this->params['function'] = 'TIME_SERIES_INTRADAY';
-        $this->params['interval'] = $minuteInterval . 'min';
-        $this->params['adjusted'] = true;
-        return $this;
+        return $this->intraday($minuteInterval, true);
     }
 
     /**
@@ -130,7 +127,7 @@ class AlphaVantage
      * @return string|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function getResponse()
+    protected function getResponse(): string
     {
         $qs = [];
         foreach ($this->params as $key => $value) {
@@ -139,16 +136,21 @@ class AlphaVantage
 
         $url = self::BASE_URL . implode('&', $qs);
 
-        $client = new Client();
-        $response = $client->get($url);
+        try {
+            $client = new Client();
+            $response = $client->get($url);
 
-        if ($response->getStatusCode() == 200) {
-            return $response->getBody()->getContents();
+            $content = json_decode($response->getBody()->getContents());
+            $error = $content->{'Error Message'} ?? null;
+            if ($error) {
+                throw new \Exception($error);
+            }
+
+            return $content;
+
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Error accessing server data: ' . $e->getMessage());
         }
-
-        return null;
     }
-
-
 
 }
