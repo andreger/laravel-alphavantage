@@ -3,6 +3,7 @@
 namespace Asgedev\AlphaVantage;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class AlphaVantage
 {
@@ -123,9 +124,7 @@ class AlphaVantage
 
     /**
      * Get API call response
-     *
-     * @return string|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return string
      */
     protected function getResponse(): string
     {
@@ -143,12 +142,12 @@ class AlphaVantage
             $content = json_decode($response->getBody()->getContents());
             $error = $content->{'Error Message'} ?? null;
             if ($error) {
-                throw new \Exception($error);
+                throw new \RuntimeException('Error accessing server data:' . $error);
             }
 
             return $content;
 
-        } catch (\Exception $e) {
+        } catch (GuzzleException $e) {
             throw new \RuntimeException('Error accessing server data: ' . $e->getMessage());
         }
     }
