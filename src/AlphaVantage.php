@@ -20,86 +20,6 @@ class AlphaVantage
     }
 
     /**
-     * Set time series to intraday
-     *
-     * @param int $minuteInterval Supported values: 1, 5, 15, 30 and 60
-     * @return $this
-     */
-    public function intraday(int $minuteInterval = 60, bool $adjusted = false)
-    {
-        $this->params['function'] = 'TIME_SERIES_INTRADAY';
-        $this->params['interval'] = $minuteInterval . 'min';
-        $this->params['adjusted'] = $adjusted;
-        return $this;
-    }
-
-    /**
-     * Set time series to intraday adjusted
-     *
-     * @param int $minuteInterval Supported values: 1, 5, 15, 30 and 60
-     * @return $this
-     */
-    public function intradayAdjusted(int $minuteInterval = 60)
-    {
-        return $this->intraday($minuteInterval, true);
-    }
-
-    /**
-     * Set time series to daily
-     *
-     * @return $this
-     */
-    public function daily()
-    {
-        $this->params['function'] = 'TIME_SERIES_DAILY';
-        return $this;
-    }
-
-    /**
-     * Set time series to monthly
-     *
-     * @return $this
-     */
-    public function monthly()
-    {
-        $this->params['function'] = 'TIME_SERIES_MONTHLY';
-        return $this;
-    }
-
-    /**
-     * Set time series to monthly adjusted
-     *
-     * @return $this
-     */
-    public function monthlyAdjusted()
-    {
-        $this->params['function'] = 'TIME_SERIES_MONTHLY_ADJUSTED';
-        return $this;
-    }
-
-    /**
-     * Set time series to weekly
-     *
-     * @return $this
-     */
-    public function weekly()
-    {
-        $this->params['function'] = 'TIME_SERIES_WEEKLY';
-        return $this;
-    }
-
-    /**
-     * Set time series to weekly adjusted
-     *
-     * @return $this
-     */
-    public function weeklyAdjusted()
-    {
-        $this->params['function'] = 'TIME_SERIES_WEEKLY_ADJUSTED';
-        return $this;
-    }
-
-    /**
      * Set symbol
      *
      * @param string $symbol
@@ -112,32 +32,14 @@ class AlphaVantage
     }
 
     /**
-     * Set output size to full
-     *
-     * @return $this
-     */
-    public function full()
-    {
-        $this->params['outputsize'] = 'full';
-        return $this;
-    }
-
-    /**
      * Get API call response
      * @return string
      */
-    protected function getResponse(): string
+    protected function getResponse(): object
     {
-        $qs = [];
-        foreach ($this->params as $key => $value) {
-            $qs[] = $key . '=' . $value;
-        }
-
-        $url = self::BASE_URL . implode('&', $qs);
-
         try {
             $client = new Client();
-            $response = $client->get($url);
+            $response = $client->get($this->getUrl());
 
             $content = json_decode($response->getBody()->getContents());
             $error = $content->{'Error Message'} ?? null;
@@ -152,4 +54,16 @@ class AlphaVantage
         }
     }
 
+    /**
+     * Get API call URL
+     */
+    public function getUrl()
+    {
+        $qs = [];
+        foreach ($this->params as $key => $value) {
+            $qs[] = $key . '=' . $value;
+        }
+
+        return self::BASE_URL . implode('&', $qs);
+    }
 }
