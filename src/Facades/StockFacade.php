@@ -1,6 +1,6 @@
 <?php
 
-namespace Asgedev\AlphaVantage\Facades;
+namespace Andreger\AlphaVantage\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

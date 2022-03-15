@@ -2,9 +2,9 @@
 
 namespace Unit;
 
-use Asgedev\AlphaVantage\Stock;
+use Andreger\AlphaVantage\Stock;
 
-use Asgedev\AlphaVantage\Tests\TestCase;
+use Andreger\AlphaVantage\Tests\TestCase;
 use function PHPUnit\Framework\assertStringContainsString;
 
 class StockTest extends TestCase

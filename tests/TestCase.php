@@ -1,8 +1,8 @@
 <?php
 
-namespace Asgedev\AlphaVantage\Tests;
+namespace Andreger\AlphaVantage\Tests;
 
-use Asgedev\AlphaVantage\AlphaVantageServiceProvider;
+use Andreger\AlphaVantage\AlphaVantageServiceProvider;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 
 class TestCase extends \Orchestra\Testbench\TestCase

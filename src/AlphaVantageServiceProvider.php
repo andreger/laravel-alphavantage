@@ -1,6 +1,6 @@
 <?php
 
-namespace Asgedev\AlphaVantage;
+namespace Andreger\AlphaVantage;
 
 use Illuminate\Support\ServiceProvider;
 
